@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Aktualności - Zippobss</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="container">
+<header>
+    <h1>📰 Aktualności</h1>
+</header>
+
+<main>
+<div id="news-container"></div>
+
+<div class="buttons">
+    <a href="index.html" class="btn news-btn">🏠 Powrót do Strony Głównej</a>
+</div>
+</main>
+
+<footer>
+<p>© 2025 Zippobss</p>
+</footer>
+</div>
+
+<script>
+function loadNews() {
+    const container = document.getElementById('news-container');
+    container.innerHTML = '';
+    const news = JSON.parse(localStorage.getItem('news')) || [];
+    news.forEach(n => {
+        const div = document.createElement('section');
+        div.className = 'news';
+        div.innerHTML = `<h2>${n.title}</h2><p>${n.content}</p>`;
+        container.appendChild(div);
+    });
+}
+loadNews();
+</script>
+<script>
+const isAdmin = localStorage.getItem('adminLogged') === 'true';
+
+if(isAdmin){
+    // pokaż przycisk wylogowania
+    const container = document.querySelector('.container');
+    const logoutBtn = document.createElement('button');
+    logoutBtn.textContent = 'Wyloguj';
+    logoutBtn.className = 'btn discord-btn';
+    logoutBtn.style.position = 'fixed';
+    logoutBtn.style.top = '20px';
+    logoutBtn.style.right = '20px';
+    logoutBtn.onclick = () => {
+        localStorage.removeItem('adminLogged');
+        window.location.href = 'login.html';
+    };
+    container.appendChild(logoutBtn);
+
+    // tutaj można też odblokować inne elementy admina
+}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Logowanie - Zippobss</title>
+<link rel="stylesheet" href="style.css">
+<link rel="icon" href="user.png" type="image/png" />
+</head>
+<body>
+<div class="container">
+    <header>
+        <h1>🔑 Logowanie</h1>
+    </header>
+
+    <main>
+        <!-- LOGOWANIE -->
+        <div id="login-container">
+            <input type="text" id="username" placeholder="Nazwa użytkownika">
+            <input type="password" id="password" placeholder="Hasło">
+            <button class="btn news-btn" onclick="login()">Zaloguj</button>
+            <p id="error-msg" style="color:red; margin-top:10px;"></p>
+        </div>
+        <div class="buttons">
+        <a href="index.html" class="btn news-btn">🏠 Powrót do Strony Głównej</a>
+        </div>
+
+        <!-- PANEL ADMINA -->
+        <div id="admin-panel" style="display:none;">
+            <h2>Panel Admina</h2>
+            <button class="btn discord-btn" onclick="logout()">Wyloguj</button>
+
+            <h3>Dodaj / Edytuj aktualność</h3>
+            <input type="text" id="news-title" placeholder="Tytuł" style="width:100%; margin-bottom:10px;">
+            <textarea id="news-content" placeholder="Treść aktualności" style="width:100%; height:80px;"></textarea>
+            <button class="btn kick-btn" onclick="saveNews()">Zapisz aktualność</button>
+
+            <h3>Lista aktualności</h3>
+            <div id="news-list"></div>
+        </div>
+    </main>
+
+    <footer>
+        <p>© 2025 Zippobss</p>
+    </footer>
+</div>
+
+<script>
+const USER = "admin";
+const PASS = "110369";
+let editIndex = null; // indeks aktualności w edycji
+
+// Sprawdzenie loginu przy wejściu na stronę
+const isAdmin = localStorage.getItem('adminLogged') === 'true';
+if(isAdmin){
+    document.getElementById('login-container').style.display = 'none';
+    document.getElementById('admin-panel').style.display = 'block';
+    loadNews();
+}
+
+// FUNKCJE
+function login() {
+    const u = document.getElementById('username').value;
+    const p = document.getElementById('password').value;
+    const error = document.getElementById('error-msg');
+
+    if(u === USER && p === PASS){
+        localStorage.setItem('adminLogged', 'true');
+        document.getElementById('login-container').style.display = 'none';
+        document.getElementById('admin-panel').style.display = 'block';
+        loadNews();
+    } else {
+        error.textContent = "Błędny login lub hasło!";
+    }
+}
+
+function logout() {
+    localStorage.removeItem('adminLogged');
+    document.getElementById('login-container').style.display = 'block';
+    document.getElementById('admin-panel').style.display = 'none';
+    editIndex = null;
+    document.getElementById('news-title').value = '';
+    document.getElementById('news-content').value = '';
+}
+
+function saveNews() {
+    const title = document.getElementById('news-title').value.trim();
+    const content = document.getElementById('news-content').value.trim();
+    if(!title || !content) return;
+
+    let news = JSON.parse(localStorage.getItem('news')) || [];
+
+    if(editIndex !== null){
+        news[editIndex] = {title, content};
+        editIndex = null;
+    } else {
+        news.unshift({title, content});
+    }
+
+    localStorage.setItem('news', JSON.stringify(news));
+    document.getElementById('news-title').value = '';
+    document.getElementById('news-content').value = '';
+    loadNews();
+}
+
+function loadNews() {
+    const newsContainer = document.getElementById('news-list');
+    newsContainer.innerHTML = '';
+    const news = JSON.parse(localStorage.getItem('news')) || [];
+
+    news.forEach((n, index) => {
+        const div = document.createElement('div');
+        div.className = 'news';
+        div.innerHTML = `
+            <h2>${n.title}</h2>
+            <p>${n.content}</p>
+            <button class="btn news-btn" onclick="editNews(${index})">Edytuj</button>
+            <button class="btn discord-btn" onclick="deleteNews(${index})">Usuń</button>
+        `;
+        newsContainer.appendChild(div);
+    });
+}
+
+function editNews(index) {
+    const news = JSON.parse(localStorage.getItem('news')) || [];
+    const n = news[index];
+    document.getElementById('news-title').value = n.title;
+    document.getElementById('news-content').value = n.content;
+    editIndex = index;
+}
+
+function deleteNews(index) {
+    if(!confirm('Na pewno chcesz usunąć tę aktualność?')) return;
+    let news = JSON.parse(localStorage.getItem('news')) || [];
+    news.splice(index, 1);
+    localStorage.setItem('news', JSON.stringify(news));
+    loadNews();
+}
+</script>
+</body>
+</html>

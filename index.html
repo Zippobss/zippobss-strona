@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Zippobss - Official</title>
+    <link rel="stylesheet" href="style.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet" />
+    <link rel="icon" href="yourname-logo.png" type="image/png" />
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎮 Witaj na stronie od Zippobss!</h1>
+        </header>
+
+        <main>
+            <p class="intro">
+                Dołącz do naszej społeczności, bierz udział w konkursach, oglądaj transmisje i bądź na bieżąco z najnowszymi wydarzeniami!
+            </p>
+
+            <div class="buttons">
+                <a href="aktualnosci.html" class="btn news-btn">📰 Zobacz Aktualności</a>
+
+                <a href="http://dc.gg/starcraft" target="_blank" rel="noopener noreferrer" class="btn discord-btn">
+                    <img src="https://cdn-icons-png.flaticon.com/512/2111/2111370.png" alt="Discord" class="icon" />
+                    Dołącz na Discord
+                </a>
+
+                <a href="https://kick.com/zippobs" target="_blank" rel="noopener noreferrer" class="btn kick-btn">
+                    <img src="https://cdn.brandfetch.io/id3gkQXO6j/w/400/h/400/theme/dark/icon.jpeg?c=1bxid64Mup7aczewSAYMX&t=1752548681236" alt="Kick" class="icon" />
+                    Oglądaj na Kick
+                </a>
+                <a href="login.html" target="_blank" rel="noopener noreferrer" class="btn kick-btn">
+                    <img src="user.png" alt="Logowanie" class="icon" />
+                    PANEL ADMINISTRATORA
+                </a>
+            </div>
+            <script>
+            const isAdmin = localStorage.getItem('adminLogged') === 'true';
+            </script>
+
+
+        </main>
+        <footer>
+            <p>© 2025 Zippobss</p>
+        </footer>
+    </div>
+</body>
+</html>
