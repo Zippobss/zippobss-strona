@@ -1,0 +1,23 @@
+backend:
+  name: git-gateway
+  branch: main
+
+media_folder: "images/uploads"
+public_folder: "/images/uploads"
+
+collections:
+  - label: "Aktualności"
+    name: "news"
+    files:
+      - label: "Plik z aktualnościami"
+        name: "news_json"
+        file: "data/news.json"
+        format: json
+        fields:
+          - label: "Lista aktualności"
+            name: "items"
+            widget: list
+            fields:
+              - {label: "Tytuł", name: "title", widget: string}
+              - {label: "Treść", name: "content", widget: text}
+              - {label: "Data", name: "date", widget: datetime}
